@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Tags from './Tags';
 
 export default function CourseForm({ courseAdded }) {
-    const [name, setName] = useState('');
+    const [Name, setName] = useState('');
     const [link, setLink] = useState('');
     const [tags, setTags] = useState([]);
     const [count, setCount] = useState(0);
@@ -15,9 +15,21 @@ export default function CourseForm({ courseAdded }) {
 
     const submitCourse = async (e) => {
         e.preventDefault();
-        //TODO: Create the course
+        try {
+            await fetch('/api/courses', {
+              method: 'POST',
+              body: JSON.stringify({
+                Name,
+                link,
+                tags,
+              }),
+            });
         resetForm();
         courseAdded();
+        } catch (err) {
+        console.error(err);
+
+        }
     };
 
     return (
@@ -30,7 +42,7 @@ export default function CourseForm({ courseAdded }) {
                         <input
                             type="text"
                             name="name"
-                            value={name}
+                            value={Name}
                             className="form-control"
                             onChange={(e) => setName(e.target.value)}
                         />
